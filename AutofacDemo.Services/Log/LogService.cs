@@ -13,13 +13,13 @@ namespace AutofacDemo.Services.Log
     {
         //private readonly IRepository<Logs> _repository;
 
-        private  ObjectContext _context = new ObjectContext();
+        private  ObjectContext _context ;
 
-        //public LogService(ObjectContext context)
-        //{
-        //    _context = context;
+        public LogService(ObjectContext context)
+        {
+            _context = context;
 
-        //}
+        }
 
         public void SaveLog(string message)
         {
@@ -29,6 +29,11 @@ namespace AutofacDemo.Services.Log
 
             _context.LogList.Add(entity);
             _context.SaveChanges();
+        }
+
+        public List<Logs>  logList()
+        {
+            return _context.LogList.ToList();
         }
     }
 }

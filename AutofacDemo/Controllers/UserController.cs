@@ -1,5 +1,6 @@
 ﻿using AutofacDemo.Core.Data;
 using AutofacDemo.Models.Users;
+using AutofacDemo.Services.Log;
 using AutofacDemo.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace AutofacDemo.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ILogService _logService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogService logService)
         {
             _userService = userService;
+            _logService = logService;
         }
 
         // GET: User
@@ -33,6 +36,7 @@ namespace AutofacDemo.Controllers
                 Id = x.Id,
                 Name = x.Name,
                 Adress = x.Adress,
+                Tel=x.Tel,
                 Age = x.Age,
                 CreateDate = x.CreateDate
             }).ToList();
@@ -77,6 +81,7 @@ namespace AutofacDemo.Controllers
                 user.Tel = model.Tel;
                 user.CreateDate = DateTime.Now;
                 _userService.Insert(user);
+                _logService.SaveLog(DateTime.Now+":创建用户"+user.Name);
                 return RedirectToAction("Index");
             }
             catch
@@ -114,6 +119,7 @@ namespace AutofacDemo.Controllers
                 entity.Tel = model.Tel;
                 entity.Name = model.Name;
                 _userService.Update(entity);
+                _logService.SaveLog(DateTime.Now + ":编辑用户" + entity.Name);
                 return RedirectToAction("Index");
             }
             catch
@@ -148,6 +154,7 @@ namespace AutofacDemo.Controllers
                 var entity = _userService.GetById(model.Id);
 
                 _userService.Delete(entity);
+                _logService.SaveLog(DateTime.Now + ":删除用户" + entity.Name);
                 return RedirectToAction("Index");
             }
             catch

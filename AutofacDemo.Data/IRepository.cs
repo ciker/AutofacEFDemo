@@ -8,7 +8,7 @@ namespace AutofacDemo.Core
     /// <summary>
     /// Repository
     /// </summary>
-    public interface IRepository<T>  where T : BaseEntity　  
+    public interface IRepository<T> :IDependency where T : BaseEntity　  
     {
         /// <summary>
         /// Get entity by identifier

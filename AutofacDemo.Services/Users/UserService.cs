@@ -12,13 +12,13 @@ namespace AutofacDemo.Services.Users
     public class UserService : IUserService
     {
         //private readonly IRepository<User> _repository;
-        private ObjectContext _context = new ObjectContext();
+        private ObjectContext _context;
 
 
-        //public UserService(IRepository<User> repository)
-        //{
-        //    _repository = repository;
-        //}
+        public UserService(ObjectContext context)
+        {
+            _context = context;
+        }
 
         public void Delete(User user)
         {

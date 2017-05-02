@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutofacDemo.Services.Users
 {
-    public interface IUserService 
+    public interface IUserService :IDependency
     {
          List<User> UserList();
 

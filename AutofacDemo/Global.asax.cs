@@ -19,7 +19,6 @@ namespace AutofacDemo
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        public static IContainer container;
         protected void Application_Start()
         {
             //其它的初始化过程
@@ -35,24 +34,25 @@ namespace AutofacDemo
         private void RegisterService()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            //var baseType = typeof(IDependency);
+            //注册方式一（自动注册）：所有的接口都继承自IDependency，从而实现自动注册
+            //获取当前所有的程序集合
+            var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var baseType = typeof(IDependency);
+            //注册当前程序集
+            builder.RegisterAssemblyTypes(assemblys.ToArray());
+            builder.RegisterAssemblyTypes(assemblys.ToArray())
+                .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
+                .AsImplementedInterfaces().InstancePerLifetimeScope();
 
+            //注册方式二（手动注册）：手动添加接口的注册信息
+            ////获取当前所有的程序集合
             //var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
-            //var AllServices =
-            //    assemblys.SelectMany(s => s.GetTypes())
-            //    .Where(p => baseType.IsAssignableFrom(p) && p != baseType);
-
+            ////注册当前程序集
             //builder.RegisterAssemblyTypes(assemblys.ToArray());
-
-            //builder.RegisterAssemblyTypes(assemblys.ToArray())
-            //    .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
-            //    .AsImplementedInterfaces().InstancePerLifetimeScope();
-            
-
             //builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
-            builder.RegisterType<LogService>().As<ILogService>();
-            builder.RegisterType<UserService>().As<IUserService>();
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
+            //builder.RegisterType<LogService>().As<ILogService>();
+            //builder.RegisterType<UserService>().As<IUserService>();
+            //builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
