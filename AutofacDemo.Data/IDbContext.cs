@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using AutofacDemo.Core;
+using AutofacDemo.Services;
 
 namespace AutofacDemo.Data
 {
-    public interface IDbContext
+    public interface IDbContext : IDependency
     {
         /// <summary>
         /// Get DbSet

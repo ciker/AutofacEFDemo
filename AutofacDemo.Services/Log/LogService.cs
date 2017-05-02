@@ -11,13 +11,12 @@ namespace AutofacDemo.Services.Log
 {
     public class LogService : ILogService
     {
-        //private readonly IRepository<Logs> _repository;
+       private readonly IRepository<Logs> _repository;
 
-        private  ObjectContext _context ;
 
-        public LogService(ObjectContext context)
+        public LogService(IRepository<Logs> repository)
         {
-            _context = context;
+            _repository = repository;
 
         }
 
@@ -26,14 +25,12 @@ namespace AutofacDemo.Services.Log
             var entity = new Logs();
             entity.Message = message;
             entity.CreateDate = DateTime.Now;
-
-            _context.LogList.Add(entity);
-            _context.SaveChanges();
+            _repository.Insert(entity);
         }
 
         public List<Logs>  logList()
         {
-            return _context.LogList.ToList();
+            return _repository.Table.ToList();
         }
     }
 }

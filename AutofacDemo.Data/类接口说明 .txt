@@ -1,0 +1,6 @@
+﻿1、AutofacEntityTypeConfiguration类重新实现EntityTypeConfiguration类，然后所有的Map类都继承自该类，ObjectContext的
+OnModelCreating方法添加Map类时，可以根据该类自动添加。
+2、EFRepository和IRepository定义了统一增删改的EF类，该类注册时必须用泛型注册。
+3、IDbContext定义了对象及其执行SQL语句等方法。
+4、ObjectContext实现连接数据库，及其具体实现IDbContext的方法。
+5、IDependency：公共的接口，所有的自定义接口都必须继承自该类，这样可以实现自动注册。

@@ -44,16 +44,20 @@ namespace AutofacDemo
                 .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
                 .AsImplementedInterfaces().InstancePerLifetimeScope();
 
+
+            //****************************************
             //注册方式二（手动注册）：手动添加接口的注册信息
             ////获取当前所有的程序集合
             //var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
             ////注册当前程序集
             //builder.RegisterAssemblyTypes(assemblys.ToArray());
-            //builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
             //builder.RegisterType<LogService>().As<ILogService>();
             //builder.RegisterType<UserService>().As<IUserService>();
             //builder.RegisterControllers(Assembly.GetExecutingAssembly());
+            //****************************************
 
+            //注册泛型
+            builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }

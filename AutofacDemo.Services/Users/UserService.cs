@@ -11,56 +11,56 @@ namespace AutofacDemo.Services.Users
 {
     public class UserService : IUserService
     {
-        //private readonly IRepository<User> _repository;
-        private ObjectContext _context;
+        private readonly IRepository<User> _repository;
 
+        //private ObjectContext _context = new ObjectContext();
 
-        public UserService(ObjectContext context)
+        public UserService( IRepository<User> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public void Delete(User user)
         {
             if(user==null)
             throw new NotImplementedException("User is null");
-            _context.UserList.Remove(user);
-            _context.SaveChanges();
-            //_repository.Delete(user);
+            //_context.UserList.Remove(user);
+            //_context.SaveChanges();
+            _repository.Delete(user);
         }
 
         public User GetById(int id)
         {
-            return _context.UserList.FirstOrDefault(t => t.Id == id);
-            //return _repository.GetById(id);
+            //return _context.UserList.FirstOrDefault(t => t.Id == id);
+            return _repository.GetById(id);
         }
 
         public void Insert(User user)
         {
             if (user == null)
                 throw new NotImplementedException("User is null");
-            _context.UserList.Add(user);
-            _context.SaveChanges();
-            //_repository.Insert(user);
+            //_context.UserList.Add(user);
+            //_context.SaveChanges();
+            _repository.Insert(user);
         }
 
         public void Update(User user)
         {
             if (user == null)
                 throw new NotImplementedException("User is null");
-            var users = _context.UserList.FirstOrDefault(t => t.Id == user.Id);
-            users.Name = user.Name;
-            users.Age = user.Age;
-            user.Adress = user.Adress;
-            user.Tel = user.Tel;
-            _context.SaveChanges();
-            //_repository.Update(user);
+            //var users = _context.UserList.FirstOrDefault(t => t.Id == user.Id);
+            //users.Name = user.Name;
+            //users.Age = user.Age;
+            //user.Adress = user.Adress;
+            //user.Tel = user.Tel;
+            //_context.SaveChanges();
+            _repository.Update(user);
         }
 
         public List<User> UserList()
         {
-            return _context.UserList.ToList();
-            //return _repository.Table.ToList();
+            //return _context.UserList.ToList();
+            return _repository.Table.ToList();
         }
     }
 }
